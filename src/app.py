@@ -29,5 +29,33 @@ banco_vetorial = Chroma(
 class QueryRequest(BaseModel):
     query: str
 
+@app.post("/query")
+def query_rag(request: QueryRequest):
+    try:
+        query_embedding = modelo_embedding.embed_query(request.query)
+
+        resultados = banco_vetorial.similarity_search_by_vector(
+            embedding=query_embedding, 
+            k=1
+        )
+        contexto_limpo = resultados[0].page_content
+
+        prompt = (
+            f"You are an AI assistant. Answer based ONLY on this document:\n"
+            f"{contexto_limpo}\n\n"
+            f"User: {request.query}\nAssistant:"
+        )
+
+        resposta = llm.invoke(prompt)
+
+        return {
+            "pergunta": request.query,
+            "resposta": resposta.strip(),
+            "contexto_utilizado": contexto_limpo
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     uvicorn.run("src.app:app", host="0.0.0.0", port=8000, reload=True)
