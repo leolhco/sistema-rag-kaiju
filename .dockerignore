@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+data/processed/
+chroma.sqlite3
+.git/
+.gitignore
