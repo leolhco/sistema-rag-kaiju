@@ -1,0 +1,11 @@
+# 1. Credenciais
+.env
+
+# 2. Python e Ambientes Virtuais
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# 3. Dados e Bancos Vetoriais
+data/processed/
+chroma.sqlite3
