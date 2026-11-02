@@ -9,8 +9,7 @@ RUN conda env create -f environment.yml
 COPY src/ ./src/
 COPY data/ ./data/
 
-# Executa a ingestão para salvar o banco vetorial dentro da imagem
-RUN conda run -n kaiju python src/ingest.py
+RUN conda run -n kaiju python src/ingestao.py
 
 EXPOSE 8000
 
